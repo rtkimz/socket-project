@@ -6,6 +6,12 @@ app.get('/', function(req, res) {
   res.sendfile('index.html')
 });
 
+io.on('connection', function(socket) {
+  socket.on('clientEvent', function(data) {
+    console.log(data)
+  })
+})
+
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
   console.log('A user connected')
