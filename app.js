@@ -11,8 +11,14 @@ io.on('connection', function(socket) {
   console.log('A user connected')
 
   //Send a message after a timeout of 4 seconds
+  //setTimeout(function() {
+  //  socket.send('Send a message 4 seconds after connection!')
+  //}, 4000);
+
+  // Send a message when
   setTimeout(function() {
-    socket.send('Send a message 4 seconds after connection!')
+    // Sending an object when emitting an event
+    socket.emit('testerEvent', {description: 'A custom event named testerEvent!'})
   }, 4000);
 
   //Whenever someome disconnects this piece of code is executed
