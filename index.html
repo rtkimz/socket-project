@@ -8,6 +8,7 @@
   <script>
     let socket = io()
     socket.on('testerEvent', function(data){document.write(data.description)})
+    socket.emit('clientEvent', 'Send an event from the client!')
   </script>
   <body>Hello World!</body>
 </html>
