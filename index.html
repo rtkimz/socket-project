@@ -5,6 +5,9 @@
   </head>
   <script src="/socket.io/socket.io.js"></script>
 
-  <script>let socket = io()</script>
+  <script>
+    let socket = io()
+    socket.on('message', function(data){document.write(data)})
+  </script>
   <body>Hello World!</body>
 </html>
