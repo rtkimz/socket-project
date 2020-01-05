@@ -7,18 +7,15 @@ app.get('/', function(req, res) {
 });
 
 let clients = 0;
-
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
   clients++
-  console.log('A user connected')
-
-  io.sockets.emit('broadcast', {description: clients + ' clients connected!'});
-
+  socket.emit('newclientconnect', {description: 'Hey, welcome!'});
+  socket.broadcast.emit('newclientconnect', {description: clients + ' clients connected!'})
   //Whenever someome disconnects this piece of code is executed
   socket.on('disconnect', function() {
     clients--
-    io.sockets.emit('broadcast', {description: clients + ' clients connected!'});
+    socket.broadcast.emit('broadcast', {description: clients + ' clients connected!'});
   });
 });
 
