@@ -6,11 +6,15 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
-    let socket = io()
-    socket.on('newclientconnect', function(data) {
+    let socket = io('/my-namespace')
+    socket.on('hi', function(data) {
       document.body.innerHTML = ''
-      document.write(data.description);
+      document.write(data)
     })
+    // socket.on('newclientconnect', function(data) {
+    //  document.body.innerHTML = ''
+    //  document.write(data.description);
+    //})
     // socket.emit('clientEvent', 'Send an event from the client!')
   </script>
   <body>Hello World!</body>
