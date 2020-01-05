@@ -6,30 +6,19 @@ app.get('/', function(req, res) {
   res.sendfile('index.html')
 });
 
-io.on('connection', function(socket) {
-  socket.on('clientEvent', function(data) {
-    console.log(data)
-  })
-})
+let clients = 0;
 
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
+  clients++
   console.log('A user connected')
 
-  //Send a message after a timeout of 4 seconds
-  //setTimeout(function() {
-  //  socket.send('Send a message 4 seconds after connection!')
-  //}, 4000);
-
-  // Send a message when
-  setTimeout(function() {
-    // Sending an object when emitting an event
-    socket.emit('testerEvent', {description: 'A custom event named testerEvent!'})
-  }, 4000);
+  io.sockets.emit('broadcast', {description: clients + ' clients connected!'});
 
   //Whenever someome disconnects this piece of code is executed
   socket.on('disconnect', function() {
-    console.log('A user disconnected')
+    clients--
+    io.sockets.emit('broadcast', {description: clients + ' clients connected!'});
   });
 });
 
