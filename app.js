@@ -6,11 +6,20 @@ app.get('/', function(req, res) {
   res.sendfile('index.html')
 });
 
-let nsp = io.of('/my-namespace')
-nsp.on('connection', function(socket) {
-  console.log('someone connected')
-  nsp.emit('hi', 'Hello everyone!')
+let roomNo = 1
+io.on('connection', function(socket) {
+  // increase roomNo when 2 clients are present in a room
+  if(io.nsps['/'].adapter.rooms["room-"+roomNo] && io.nsps['/'].adapter.rooms["room-"+roomNo].length > 1) roomNo++
+  socket.join("room-"+roomNo)
+
+  // Send this event to everyone in the room
+  io.sockets.in("room-"+roomNo).emit('connectToRoom', "You are in room no. " + roomNo)
 })
+// let nsp = io.of('/my-namespace')
+// nsp.on('connection', function(socket) {
+//   console.log('someone connected')
+//   nsp.emit('hi', 'Hello everyone!')
+// })
 //let clients = 0;
 //Whenever someone connects this gets executed
 //io.on('connection', function (socket) {

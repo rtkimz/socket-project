@@ -6,11 +6,16 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
-    let socket = io('/my-namespace')
-    socket.on('hi', function(data) {
+    let socket = io()
+    socket.on('connectToRoom', function(data) {
       document.body.innerHTML = ''
       document.write(data)
     })
+    // let socket = io('/my-namespace')
+    // socket.on('hi', function(data) {
+    //   document.body.innerHTML = ''
+    //   document.write(data)
+    // })
     // socket.on('newclientconnect', function(data) {
     //  document.body.innerHTML = ''
     //  document.write(data.description);
