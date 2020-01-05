@@ -6,32 +6,23 @@ app.get('/', function(req, res) {
   res.sendfile('index.html')
 });
 
-let roomNo = 1
+let users = []
 io.on('connection', function(socket) {
-  // increase roomNo when 2 clients are present in a room
-  if(io.nsps['/'].adapter.rooms["room-"+roomNo] && io.nsps['/'].adapter.rooms["room-"+roomNo].length > 1) roomNo++
-  socket.join("room-"+roomNo)
+  console.log('A user has connected')
+  socket.on('setUsername', function(data) {
+    if(users.indexOf(data) > -1) {
+      socket.emit('userExists', data + ' username is taken! Try some other username.')
+    } else {
+      users.push(data)
+      socket.emit('userSet', {username: data})
+    }
+  })
 
-  // Send this event to everyone in the room
-  io.sockets.in("room-"+roomNo).emit('connectToRoom', "You are in room no. " + roomNo)
+  socket.on('msg', function(data) {
+    // Send message to everyone
+    io.sockets.emit('newmsg', data)
+  })
 })
-// let nsp = io.of('/my-namespace')
-// nsp.on('connection', function(socket) {
-//   console.log('someone connected')
-//   nsp.emit('hi', 'Hello everyone!')
-// })
-//let clients = 0;
-//Whenever someone connects this gets executed
-//io.on('connection', function (socket) {
-//  clients++
-//  socket.emit('newclientconnect', { description: 'Hey, welcome!' });
-//  socket.broadcast.emit('newclientconnect', { description: clients + ' clients connected!' })
-//  //Whenever someome disconnects this piece of code is executed
-//  socket.on('disconnect', function () {
-//    clients--
-//    socket.broadcast.emit('broadcast', { description: clients + ' clients connected!' });
-//  });
-//});
 
 http.listen(3000, function() {
   console.log('listening on *:3000')
