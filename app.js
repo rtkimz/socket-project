@@ -6,6 +6,7 @@ app.get('/', function(req, res) {
   res.sendfile('index.html')
 });
 
+// Here is a comment to prove that I have changed this file
 let users = []
 io.on('connection', function(socket) {
   console.log('A user has connected')
